@@ -5,5 +5,5 @@ package com.constants;
  */
 public class LinksharingConstants {
 
-    public static  final String USER_DETAILS = "UserDetails";
+    public static final String USER_DETAILS = "UserDetails";
 }

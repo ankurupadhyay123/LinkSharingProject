@@ -5,10 +5,7 @@ import com.servicesapi.EmailService;
 import com.servicesapi.OTPValidation;
 import com.servicesapi.UpdationService;
 import com.servicesapi.ValidationService;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.query.Query;
+import com.util.GetSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +18,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.io.PrintWriter;
 
 /**
  * Created by ankur on 14/7/17.
@@ -43,6 +39,7 @@ public class ValidationController {
 
     private ModelAndView view;
     private OTPMapping otpMapping;
+    HttpSession session;
 
     @RequestMapping(value = "/sendOTP", method = RequestMethod.POST)
     public @ResponseBody ModelAndView sendOTP(@RequestParam("email_name") String email, HttpServletRequest request){
@@ -63,7 +60,7 @@ public class ValidationController {
         if(OTP == otpMapping.getOtp()){
             if(updationService.updatePassword(email,password)){
                 view = new ModelAndView();
-                view.setViewName("profile");
+                view.setViewName("dashBoard");
             }
         }
         return view;
@@ -71,7 +68,7 @@ public class ValidationController {
 
     @RequestMapping(value = "/checkunique", method = RequestMethod.POST)
     public void checkUsername(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        HttpSession session = request.getSession();
+        session = GetSession.getSession(request);
         String userName = request.getParameter("val");
         Object result = validationService.checkUniqueUsername(userName);
         if(result != null)
@@ -85,7 +82,6 @@ public class ValidationController {
 
     @RequestMapping(value = "/checkuniqueemail", method = RequestMethod.POST)
     public void checkEmail(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
         String email = request.getParameter("val");
         Object result = validationService.checkUniqueEmail(email);
         if(result != null)

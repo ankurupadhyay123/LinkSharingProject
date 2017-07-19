@@ -5,11 +5,17 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <script type="text/javascript" src="jquery-3.2.1.min.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="${pageContext.request.contextPath}/resources/js/jquery-3.2.1.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css" rel="stylesheet">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.1/jquery.form.min.js"></script>
+
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/welcomepage.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mystyle.css"/>
     <script>
         history.forward();
@@ -22,35 +28,124 @@
         };
         jQuery(document).on("click", ".popupBox", showPopup);
 
+        $(document).ready (function(){
+            $(function () {
+                $("#tagName, #headersearchtag, #docTagName").autocomplete({
+                    source:function (request, response) {
+                        $.ajax({
+                            url:"/getTags",
+                            type:"POST",
+                            data:{ term:request.term},
+                            dataType:"json",
 
-        //alert (dataString);return false;
+                            success:function (data) {
+                                console.log(data);
+                                response($.map(data, function (v) {
+                                    return{
+                                        label:v,
+                                        value:v
+                                    };
+                                }));
+                            },
+                        });
+                    },
+                });
+            });
+        });
+
         $(document).ready(function () {
-            function  createTopic() {
-                alert("herere");
+            function createTopic() {
                 var name = $("#topicName").val();
                 var visibility = $("#topicvisibility").val();
-                var dataString = 'name='+ name + '&visibility=' + visibility;
                 $.ajax({
                     type: "POST",
-                    url: "/createTitle",
-                    data: dataString,
-                    contentType : "application/json",
-                    dataType : 'json',
-                    success: function(response) {
-                        console.log("response" ,response);
+                    url: "createTitle",
+                    data: {topicName: name, visibility: visibility},
+                    success: function (response) {
+                        console.log("response", response);
                         alert("data saved");
+                    },
+                    error: function (r) {
+                        console.log(r);
                     }
                 });
             }
-            jQuery(document).on("click","#submitForm",createTopic);
+            jQuery(document).on("click", "#submitForm", createTopic);
         });
+
+        $(document).ready(function () {
+            function createLinkResource() {
+                var linkUrl = $("#urllink").val();
+                var description = $("#description").val();
+                var topic = $("#tagName").val();
+                $.ajax({
+                    type: "POST",
+                    url: "createLinkResource",
+                    data: {linkUrl: linkUrl, description: description, topic:topic},
+                    success: function (response) {
+                        console.log("response", response);
+                        alert("data saved");
+                    },
+                    error: function (r) {
+                        console.log(r);
+                    }
+                });
+            }
+            jQuery(document).on("click", "#submitlinkform", createLinkResource);
+        });
+
+/*
+        $(document).ready(function () {
+            function createDocumentResource() {
+//                var fileUrl = $("#documentFile").val();
+                var description = $("#documentDescription").val();
+                var topic = $("#docTagName").val();
+                $.ajax({
+                    type: "POST",
+                    url: "createDocumentResource",
+                    data: {description: description, topic:topic},
+                    success: function (response) {
+                        console.log("response", response);
+                        alert("data saved");
+                    },
+                    error: function (r) {
+                        console.log(r);
+                    }
+                });
+            }
+            jQuery(document).on("click", "#submitdocumentform", createDocumentResource);
+        });
+*/
+        $('#documentForm').ajaxForm({
+
+            success: function (msg) {
+                alert(msg);
+            },
+            error: function (msg) {
+                alert(msg);
+            }
+        });
+
+
     </script>
+    <style>
+        span.spanicons{
+            margin-right: 5px;
+            font-size:20px;
+            margin-top:7px;
+        }
+        .rowheader{
+            margin: 0;
+        }
+        .ui-front{
+            z-index: 10000;
+        }
+    </style>
 </head>
-<body class="body" style="background:url('${pageContext.request.contextPath}/resources/assets/backgroundImage.jpg');">
+<body class="body" style="background:url('${pageContext.request.contextPath}/resources/assets/mybag.jpg');">
 <%! static int flag;%>
 <%
     User user = (User) session.getAttribute("UserDetails");
-    Subscription subscription = new Subscription();
 %>
 <div class="container" style="width: 70%">
     <!-- Modal -->
@@ -63,7 +158,6 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title">Create Topic</h4>
                 </div>
-
                 <div class="modal-body">
                     <form method="post" action="javascript:void(0)">
                         <div class="form-group">
@@ -71,13 +165,13 @@
                             <input type="text" id="topicName" class="form-control" name="topicName" aria-describedby="emailHelp" placeholder="Enter topic name" required>
                         </div>
                         <div class="form-group">
-                            <label>Visibility</label>
+                            <label>Topic</label>
                             <select id="topicvisibility" class="form-control" name="visibility">
                                 <option>PUBLIC</option>
                                 <option>PRIVATE</option>
                             </select>
                         </div>
-                        <button id="submitForm" type="submit" class="btn btn-primary">Submit</button>
+                        <button id="submitForm" type="submit" class="btn btn-primary">Create</button>
                         <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Close</button>
                     </form>
                 </div>
@@ -86,32 +180,117 @@
         </div>
     </div>
 
-<%--
-    <script type="text/javascript"> window.onload = alertName; </script>
+    <!-- Modal -->
+    <div class="modal fade" id="linkModal" role="dialog">
+        <div class="ui-front modal-dialog">
 
-    <script type="text/javascript">
-        var Msg ='<%=request.getAttribute("error")%>';
-        if (Msg == "alert") {
-            function alertName(){
-                alert("Topic with same name exist... Try another!!!");
-            }
-        }
-    </script>
---%>
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Share Link</h4>
+                </div>
+
+                <div class="modal-body">
+                    <form method="post" action="javascript:void(0)">
+                        <div class="form-group">
+                            <label>Link*:</label>
+                            <input type="text" class="form-control" name="fileUrl" id="urllink" aria-describedby="emailHelp" placeholder="Enter link name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Description*:</label>
+                                <textarea id="description" class="form-control">Description</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Topic</label>
+                            <input type="search" id="tagName">
+                        </div>
+                        <button id="submitlinkform" type="submit" class="btn btn-primary">Share</button>
+                        <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Close</button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="documentModal" role="dialog">
+        <div class="ui-front modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Share Document</h4>
+                </div>
+
+                <div class="modal-body">
+                    <form method="post" id="documentForm" enctype="multipart/form-data" action="/createDocumentResource">
+                        <div class="form-group">
+                            <label>Document*:</label>
+                            <input type="file" class="form-control" id="documentFile" name="fileUrl" placeholder="Browse file" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Description*:</label>
+                            <textarea id="documentDescription" name="description" class="form-control" placeholder="Description"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Topic</label>
+                            <input type="search" name="topic"id="docTagName">
+                        </div>
+                        <button id="submitdocumentform" type="submit" class="btn btn-primary">Share</button>
+                        <button type="button" class="btn btn-default pull-right" data-dismiss="modal">Close</button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
 
     <div class="row well" >
         <div>
-            <a class="pull-left a1" style="text-decoration: none">Link Sharing</a>
-            <div class="col-md-2 col-sm-3 searchbox">
-                <div class="input-group ">
-                    <span class="input-group-addon glyphicon glyphicon-search"></span>
-                    <input type="search" class="form-control" placeholder="search"></input>
-                    <span class="input-group-addon glyphicon glyphicon-remove-sign"></span>
-                </div>
+            <div class="col-md-5 col-sm-4">
+                <a class="a1 rowheader" style="text-decoration: none">Link Sharing</a>
             </div>
-            <a href="#" class="pull-right" data-toggle="modal" data-target="#myModal">
-                <span class="glyphicon glyphicon-comment" style="font-size:20px; margin-top:7px;"></span>
-            </a>
+            <div class="col-md-7 col-sm-7">
+                <div class="col-md-4 col-sm-4 searchbox">
+                    <div class="input-group ">
+                        <span class="input-group-addon glyphicon glyphicon-search"></span>
+                        <input id="headersearchtag" type="search" class="form-control" placeholder="search"></input>
+                        <span class="input-group-addon glyphicon glyphicon-remove-sign"></span>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-3" style="margin-right: 20px">
+                    <a href="#" data-toggle="modal" data-target="#myModal">
+                        <span class="glyphicon glyphicon-comment spanicons"></span>
+                    </a>
+                    <a href="#"><span class="glyphicon glyphicon-envelope spanicons"></span></a>
+                    <a href="#" data-toggle="modal" data-target="#linkModal">
+                        <span class="glyphicon glyphicon-link spanicons"></span>
+                    </a>
+                    <a href="#" data-toggle="modal" data-target="#documentModal"><span class="glyphicon glyphicon-copy spanicons"></span></a>
+                </div>
+                <div class="col-md-4 col-sm-4 pull-right" style="padding: 0;style="margin-right: 0">
+                    <div class="col-md-4 col-sm-4"></div>
+                    <div class="col-md-3 col-sm-3">
+                        <a href="#"><span class="glyphicon glyphicon-user spanicons"></span></a>
+                    </div>
+                    <div class="col-md-5 col-sm-5">
+                        <span class="dropdown" style="float: right">
+                            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"><%=user.getUserName()%>
+                                <span class="caret"></span></button>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">HTML</a></li>
+                                <li><a href="#">CSS</a></li>
+                                <li><a href="#">JavaScript</a></li>
+                            </ul>
+                        </span>
+                    </div>
+                </div>
+
+            </div>
         </div>
     </div>
     <div id="division1" class="col-md-5 col-sm-5">
@@ -287,13 +466,38 @@
                 <div class="dynamicDivHead">
                     <p class="phead">Inbox</p>
                 </div>
-                <div name="userprofileBlogs" style="padding: 7px">
+<%--                <div name="userprofileBlogs" style="padding: 7px">
 
+                </div>--%>
+                <div style="margin-top:10px;margin-left:10px;margin-right:10px;margin-bottom:2px;">
+                    <div class="media">
+                        <div class="media-left">
+                            <img class="media-object" src="getphoto" style="background-size: 100% 100%;  width:90px; height: 90px">
+                        </div>
+                        <div class="media-body" >
+                            <h4 class="media-heading" id="fullNameOfUser" style="margin-right: 5px;margin-bottom: 0px"><%=user.getFirstName()+" "+user.getLastName()%></h4>
+                            <small style="margin-top:0px "><%= "@"+user.getUserName()%></small>
+                            <p  style="font-size: 15px"><%//=userblog.getBlogdata()%></p>
+                            <div >
+                                <div class="col-md-6 col-sm-10" style="float: left;margin-bottom: 0px;margin-left: 0">
+                                    <p style="margin-bottom: 0">Subscriptions</p>
+                                    <a href="#">${subscriptionCount}</a>
+                                </div>
+                                <div class="col-md-6 col-sm-10" style="float: left;margin-bottom: 0px;margin-left: 0">
+                                    <p style="margin-bottom: 0">jijdskllkfdjs</p>
+                                    <p>jkldjsjfkldsfj</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
     </div>
 </div>
+
+<%--<form action="/getTags" method="post"></form>Search:<input type="text" id="tagName"></input>--%>
+
 </body>
 </html>

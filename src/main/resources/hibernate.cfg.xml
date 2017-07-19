@@ -26,5 +26,6 @@
 		<mapping class="com.entities.OTPMapping"/>
 		<mapping class="com.entities.Topic"/>
 		<mapping class="com.entities.Subscription"/>
+		<mapping class="com.entities.Resource"/>
 	</session-factory>
 </hibernate-configuration>

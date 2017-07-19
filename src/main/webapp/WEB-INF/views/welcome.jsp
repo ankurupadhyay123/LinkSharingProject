@@ -1,5 +1,6 @@
 
 <%@ page import="java.util.Iterator" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -68,6 +69,7 @@
 
         jQuery(document).ready(function () {
            jQuery("span#myspan").hide();
+           jQuery("p#invalidUserNotify").hide();
         });
         var passwordMatches = function() {
             var password = jQuery("#password").val();
@@ -81,25 +83,26 @@
                 return false
             }
         };
-
         jQuery(document).on("focus", "#password", passwordMatches);
         jQuery(document).on("focus", "#confirm_password", passwordMatches);
         jQuery(document).on("change", "#confirm_password", passwordMatches);
         jQuery(document).on("blur", "#email", sendEmailInfo);
         jQuery(document).on("blur", "#username", sendUserNameInfo());
-
         history.forward();
 	</script>
 </head>
 
-<body class="body" style="background:url('${pageContext.request.contextPath}/resources/assets/backgroundImage.jpg');">
+<body class="body" style="background:url('${pageContext.request.contextPath}/resources/assets/mybag.jpg');">
 <%  //BlogDao blogDao = new BlogDaoImpl();
 	//List<Blog> blogs = blogDao.getAll();
 	//Iterator<Blog> blogIterator = blogs.iterator();
 %>
 	<div class="container" >
+		<%--<c:if test="${usernotvalid}">
+			<p id="invalidUserNotify" style="background-color: white; text-align: center">Invalid User!!!</p>
+		</c:if>--%>
 
-		<div class="row well" >
+			<div class="row well" >
 			<div>
 				<a class="pull-left a1" style="text-decoration: none">Link Sharing</a>
 				<div class="col-md-2 col-sm-3 searchbox">
@@ -126,7 +129,7 @@
 						</div>
 						<div class="media-body" >
 							<h4 class="media-heading" id="userNameOfBlog" style="margin-right: 5px"><%//=userblog.getUserName()%><small id="timeStampOfBlog" style="margin-left:5px "><%//=userblog.getDoc()%></small></h4>
-							<p id="userblogData" style="font-size: 15px"><%//=userblog.getBlogdata()%>></p>
+							<p id="userblogData" style="font-size: 15px"><%//=userblog.getBlogdata()%></p>
 							<a href="#" class="fa fa-facebook"></a>
 							<a href="#" class="fa fa-twitter"></a>
 							<a href="#" class="fa fa-google"></a>
@@ -214,7 +217,7 @@
 				    	<div class="form-group">
 					      <label class="control-label col-sm-3">Photo:</label>
 					      <div class="col-sm-9">
-							<input type="file" class="form-control" name="phot"></input>
+							<input type="file" class="form-control" name="pho"></input>
 					      </div>
 				    	</div>
 				    	<div class="form-group">       

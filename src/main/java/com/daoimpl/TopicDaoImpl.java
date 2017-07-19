@@ -7,14 +7,15 @@ import com.entities.User;
 import com.enums.Visibility;
 import com.servicesapi.SubscriptionService;
 import org.hibernate.NonUniqueResultException;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by ankur on 14/7/17.
@@ -49,7 +50,7 @@ public class TopicDaoImpl implements TopicDao {
                 session.save(topic);
                 session.getTransaction().commit();
                 session.close();
-                subscriptionService.subscribe(user,topic,"CASUAL");
+                subscriptionService.subscribe(user,topic,"VERY_SERIOUS");
                 System.out.println("Successfully created " + topic.toString());
                 return true;
             }else {
@@ -61,5 +62,26 @@ public class TopicDaoImpl implements TopicDao {
             System.out.println("user is not unique");
             return false;
         }
+    }
+
+    public List<Topic> getAllPublicTopics(String query){
+        Visibility vis = Visibility.valueOf("PUBLIC");
+        Session session = sessionFactory.openSession();
+        Query query1= session.createQuery("SELECT name from Topic where name like :topicname and visibility= :visibility");
+        query1.setParameter("topicname",query+"%");
+        query1.setParameter("visibility",vis);
+        List<Topic> topicsList = query1.list();
+        session.close();
+        return topicsList;
+    }
+
+    public Topic findTopicByname(String topicname){
+        Session session = sessionFactory.openSession();
+        Query query= session.createQuery("from Topic where name=:topicname");
+        //System.out.println(query);
+        query.setParameter("topicname", topicname);
+        Topic topic = (Topic) query.uniqueResult();
+        session.close();
+        return topic;
     }
 }
