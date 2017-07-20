@@ -17,32 +17,14 @@
     <script src="${pageContext.request.contextPath}/resources/js/JSForWelcomePage.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <script src="${pageContext.request.contextPath}/resources/js/JSForDashboardPage.js"></script>
-    <%--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>--%>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-
     <link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css" rel="stylesheet">
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.1/jquery.form.min.js"></script>
-
-    <%--<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/welcomepage.css"/>--%>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/dashboard.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css"/>
     <script>
-        history.forward();
-/*
-        $('#updateProfileDataForm').ajaxForm({
-
-            success: function (msg) {
-                alert(msg);
-            },
-            error: function (msg) {
-                console.log(msg);
-                alert(msg);
-            }
-        });
-*/
-
         $('#updateUserPasswordForm').ajaxForm({
 
             success: function (msg) {

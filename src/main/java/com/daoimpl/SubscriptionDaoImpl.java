@@ -13,6 +13,7 @@ import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by ankur on 15/7/17.
@@ -44,11 +45,25 @@ public class SubscriptionDaoImpl implements SubscriptionDao{
     public Long getSubscriptions(User user) {
         Session session = sessionFactory.openSession();
         Query query= session.createQuery("select count(user.userId) from Subscription where user.userId=:userId");
-        //System.out.println(query);
-        System.out.println("inside subs dao impl");
         query.setParameter("userId",user.getUserId());
         Long result =(Long) query.uniqueResult();
-        System.out.println("sub result is "+result);
         return result;
+    }
+
+    @Override
+    public Long getSubscriptionsForEachTopic() {
+        Session session = sessionFactory.openSession();
+        Query query= session.createQuery("select count(createdBy.userId) from Topic where name In (select topic.name from Subscription)");
+        //query.setParameter("userId",user.getUserId());
+        Long result =(Long) query.uniqueResult();
+        return result;
+    }
+
+    @Override
+    public List<Topic> getSubscribedTopics(User user) {
+        Session session = sessionFactory.openSession();
+        List<Topic> subscriptionList = session.createQuery("select topic from Subscription s where s.user.userId=:userId").setParameter("userId",user.getUserId()).list();
+        session.close();
+        return subscriptionList;
     }
 }

@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.mail.Multipart;
 import javax.servlet.http.HttpServletRequest;
@@ -41,14 +42,17 @@ public class DataController {
     ResourceService resourceService;
 
     HttpSession session;
+    ModelAndView view;
 
     @RequestMapping(value = "/createTitle", method = RequestMethod.POST)
     public @ResponseBody
-    void getSaved(@RequestParam("topicName") String topicName, @RequestParam("visibility") String visibility, HttpServletRequest request) {
+    ModelAndView getSaved(@RequestParam("topicName") String topicName, @RequestParam("visibility") String visibility, HttpServletRequest request) {
 
         session = GetSession.getSession(request);
         User user = (User) session.getAttribute(LinksharingConstants.USER_DETAILS);
         topicService.save(user, topicName, visibility);
+        view = new ModelAndView("dashBoard");
+        return view;
     }
 
     @RequestMapping(value = "/createLinkResource", method = RequestMethod.POST)

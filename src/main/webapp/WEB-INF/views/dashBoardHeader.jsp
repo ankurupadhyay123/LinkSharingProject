@@ -24,7 +24,7 @@
                     <span class="input-group-addon glyphicon glyphicon-remove-sign"></span>
                 </div>
             </div>
-            <div class="col-md-5 col-sm-4" style="margin-left: 25px;padding-right: 0">
+            <div class="col-md-4 col-sm-4" style="padding-right: 0">
                 <a href="#" data-toggle="modal" data-target="#myModal">
                     <span class="glyphicon glyphicon-comment spanicons"></span>
                 </a>
@@ -33,18 +33,21 @@
                     <span class="glyphicon glyphicon-link spanicons"></span>
                 </a>
                 <a href="#" data-toggle="modal" data-target="#documentModal"><span class="glyphicon glyphicon-copy spanicons"></span></a>
-                <a href="gotoProfile" class="pull-right"><img class="media-object" src="getphoto" style="background-size: 100% 100%;  width:37px; height: 37px"></a>
             </div>
-            <div class="col-md-2 col-sm-4" style="padding: 0;margin-right: 0">
+            <div class="col-md-4 col-sm-4">
+                <div class="col-md-3 col-sm-4">
+                    <a href="userProfile" class="pull-right"><img class="media-object" src="getphoto" style="background-size: 100% 100%;  width:37px; height: 37px"></a>
+                </div>
+                <div class="col-md-9 col-sm-4 pull-right" style="padding: 0;margin-right: 0">
                     <span class="dropdown" style="float: right">
                         <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown"><%=user.getUserName()%>
                         <span class="caret"></span></button>
                             <ul class="dropdown-menu">
-                                <li><a href="#">HTML</a></li>
-                                <li><a href="#">CSS</a></li>
-                                <li><a href="#">JavaScript</a></li>
+                                <li><a href="userProfile">Profile</a></li>
+                                <li><a href="logOut">Logout</a></li>
                             </ul>
                     </span>
+                </div>
             </div>
         </div>
     </div>

@@ -8,14 +8,14 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.constants.LinksharingConstants;
+import com.entities.Subscription;
+import com.entities.Topic;
 import com.entities.User;
-import com.servicesapi.LoginService;
-import com.servicesapi.RegisterService;
-import com.servicesapi.SubscriptionService;
-import com.servicesapi.TopicService;
+import com.servicesapi.*;
 import com.util.GetSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -37,6 +37,9 @@ public class LoginController {
 
     @Autowired
     private LoginService loginService;
+
+    @Autowired
+    private ResourceService resourceService;
 
     @Autowired
     private SubscriptionService subscriptionService;
@@ -103,6 +106,12 @@ public class LoginController {
             Map<String,Object> userModel = new HashMap<>();
             userModel.put("subscriptionCount",subscriptionService.getSubcriptionsOfUser(user));
             userModel.put("topicCount",topicService.getNoOfTopics(user));
+            userModel.put("subscribedTopicsList",subscriptionService.getSubscribedTopics(user));
+            userModel.put("subscriptionsForEachTopic",subscriptionService.getSubscriptionsForEachTopic());
+            userModel.put("inboxResourceList",resourceService.getInboxResource(user));
+            //System.out.println("list is"+subscriptionService.getSubcriptionsOfUser(user));
+            List<Topic> list = subscriptionService.getSubscribedTopics(user);
+            System.out.println(list);
             view = new ModelAndView("dashBoard",userModel);
             return view;
         }else {

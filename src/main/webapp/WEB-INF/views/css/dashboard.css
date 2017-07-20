@@ -77,3 +77,7 @@ span.spanicons{
 .rowheader{
 	margin: 0;
 }
+.selectpicker{
+	padding-left: 3px;
+	padding-right: 3px;
+}

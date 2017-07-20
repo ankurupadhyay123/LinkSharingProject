@@ -29,7 +29,7 @@ public class UserController {
 
     HttpSession session;
 
-    @RequestMapping(value = "/gotoProfile", method = RequestMethod.GET)
+    @RequestMapping(value = "/userProfile", method = RequestMethod.GET)
     public ModelAndView getUserProfile() {
         view = new ModelAndView("userProfile");
         return view;
@@ -54,6 +54,15 @@ public class UserController {
                 view = new ModelAndView();
                 view.setViewName("userProfile");
             }
+        return view;
+    }
+
+    @RequestMapping(value = "/logOut")
+    public ModelAndView logOut(HttpServletRequest request){
+        session = GetSession.getSession(request);
+        session.invalidate();
+        view = new ModelAndView();
+        view.setViewName("welcome");
         return view;
     }
 }

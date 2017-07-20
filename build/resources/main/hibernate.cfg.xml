@@ -27,5 +27,6 @@
 		<mapping class="com.entities.Topic"/>
 		<mapping class="com.entities.Subscription"/>
 		<mapping class="com.entities.Resource"/>
+		<mapping class="com.entities.ReadingItem"/>
 	</session-factory>
 </hibernate-configuration>

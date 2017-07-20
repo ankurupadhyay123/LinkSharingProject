@@ -78,10 +78,11 @@ public class UserDaoImpl implements UserDao {
 		if(newPhoto.getSize() == 0){
 		    Session session = sessionFactory.openSession();
 			session.beginTransaction();
-			Query query= session.createQuery("update User set firstName=:firstname , lastName=:lastname , userName=:username where email=:email");
+			Query query= session.createQuery("update User set firstName=:firstname , lastName=:lastname , userName=:username , lastUpdated=:date where email=:email");
 			query.setParameter("firstname", user.getFirstName());
 			query.setParameter("lastname", user.getLastName());
 			query.setParameter("username", user.getUserName());
+			query.setParameter("date",new Date());
 			query.setParameter("email", email);
 			query.executeUpdate();
 			session.getTransaction().commit();

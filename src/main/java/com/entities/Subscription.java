@@ -16,15 +16,9 @@ public class Subscription {
     @Column
     private Integer subcriptionID;
 
-/*    @Column
-    private String topicname;*/
     @ManyToOne
     Topic topic;
 
-/*
-    @Column
-    private String username;
-*/
     @ManyToOne
     User user;
 

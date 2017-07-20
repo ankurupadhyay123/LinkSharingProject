@@ -19,8 +19,6 @@ public class Topic {
     @Column
     private String name;
 
-  //  @Column
- //   private String createdBy;
     @ManyToOne
     private User createdBy;
 
