@@ -1,18 +1,18 @@
 package com.daoimpl;
 
-//import entities.User;
-
 import com.entities.User;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import com.daoapi.UserDao;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 //import utils.HibernateUtil;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
@@ -36,15 +36,9 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public User findByID(Integer id) {
-		return null;
-	}
-
-	@Override
 	public User findByEmail(String email) {
 		Session session = sessionFactory.openSession();
 		Query query= session.createQuery("from User where email=:email");
-		//System.out.println(query);
 		query.setParameter("email", email);
 		User user = (User) query.uniqueResult();
 		session.close();
@@ -55,7 +49,6 @@ public class UserDaoImpl implements UserDao {
 	public User findByUsernameAndPass(String userName, String password) throws SQLException {
 		Session session = sessionFactory.openSession();
 		Query query= session.createQuery("from User where userName=:userName and password=:password");
-		//System.out.println(query);
 		query.setParameter("userName", userName);
 		query.setParameter("password", password);
 		User user = (User) query.uniqueResult();
@@ -63,24 +56,55 @@ public class UserDaoImpl implements UserDao {
 		return user;
 	}
 
-	//@Transactional(propagation = Propagation.REQUIRES_NEW)
 	@Override
 	public boolean updatePassword(String email, String password) {
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
 		Query query= session.createQuery("update User set password=:password where email=:email");
-		//System.out.println("update pass"+ query);
 		query.setParameter("password", password);
 		query.setParameter("email", email);
 		query.executeUpdate();
-		//System.out.println("working 1");
 
 		query = session.createQuery("delete from OTPMapping where email=:email");
 		query.setParameter("email",email);
 		query.executeUpdate();
 		session.getTransaction().commit();
-		//System.out.println("working 2");
+		session.close();
 		return true;
+	}
+
+	@Override
+	public boolean updateUserData(User user, MultipartFile newPhoto, String email){
+		if(newPhoto.getSize() == 0){
+		    Session session = sessionFactory.openSession();
+			session.beginTransaction();
+			Query query= session.createQuery("update User set firstName=:firstname , lastName=:lastname , userName=:username where email=:email");
+			query.setParameter("firstname", user.getFirstName());
+			query.setParameter("lastname", user.getLastName());
+			query.setParameter("username", user.getUserName());
+			query.setParameter("email", email);
+			query.executeUpdate();
+			session.getTransaction().commit();
+			session.close();
+			return true;
+			}
+			else if(newPhoto.getSize() > 0){
+			Session session = sessionFactory.openSession();
+			session.beginTransaction();
+			Query query= session.createQuery("update User set firstName=:firstname,lastName=:lastname,userName=:username,photo=:photo where email=:email");
+			query.setParameter("firstname", user.getFirstName());
+			query.setParameter("lastname", user.getLastName());
+			query.setParameter("username", user.getUserName());
+			try { query.setParameter("photo",newPhoto.getBytes()); }
+			catch (IOException e) { e.printStackTrace(); }
+			query.setParameter("email", email);
+			query.executeUpdate();
+			session.getTransaction().commit();
+			session.close();
+			return true;
+		}else {
+			return false;
+		}
 	}
 
 	@Override

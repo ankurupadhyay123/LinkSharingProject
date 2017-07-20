@@ -64,6 +64,7 @@ public class TopicDaoImpl implements TopicDao {
         }
     }
 
+    @Override
     public List<Topic> getAllPublicTopics(String query){
         Visibility vis = Visibility.valueOf("PUBLIC");
         Session session = sessionFactory.openSession();
@@ -75,6 +76,7 @@ public class TopicDaoImpl implements TopicDao {
         return topicsList;
     }
 
+    @Override
     public Topic findTopicByname(String topicname){
         Session session = sessionFactory.openSession();
         Query query= session.createQuery("from Topic where name=:topicname");
@@ -83,5 +85,14 @@ public class TopicDaoImpl implements TopicDao {
         Topic topic = (Topic) query.uniqueResult();
         session.close();
         return topic;
+    }
+
+    @Override
+    public Long getNoOfTopics(User user) {
+        Session session = sessionFactory.openSession();
+        Query query= session.createQuery("select count(createdBy.userId) from Topic where createdBy.userId=:userId");
+        query.setParameter("userId",user.getUserId());
+        Long result =(Long) query.uniqueResult();
+        return result;
     }
 }

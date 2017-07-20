@@ -8,86 +8,18 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Link Sharing</title>
 	<script src="${pageContext.request.contextPath}/resources/js/jquery-3.2.1.min.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/js/JSForWelcomePage.js"></script>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js">
 	</script>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/welcomepage.css"/>
-
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css"/>
+	<script src="${pageContext.request.contextPath}/resources/js/common.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.1/jquery.form.min.js"></script>
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css" rel="stylesheet">
     <script type="text/javascript">
-        var request;
-        function sendUserNameInfo()
-        {
-			var v = document.getElementById("username").value;
-            var url="/checkunique?val="+v;
-
-            if(window.XMLHttpRequest){
-                request=new XMLHttpRequest();
-            }
-            else if(window.ActiveXObject){
-                request=new ActiveXObject("Microsoft.XMLHTTP");
-            }
-            try{
-                request.onreadystatechange=getUserNameInfo;
-                request.open("POST",url,true);
-                request.send();
-            }catch(e){alert("Unable to connect to server");}
-        }
-
-        function getUserNameInfo(){
-            if(request.readyState==4){
-                var val=request.responseText;
-                document.getElementById('usernameAvailability').innerHTML=val;
-            }
-        }
-
-        function sendEmailInfo()
-        {
-            var v = document.getElementById("email").value;
-            var url="/checkuniqueemail?val="+v;
-
-            if(window.XMLHttpRequest){
-                request=new XMLHttpRequest();
-            }
-            else if(window.ActiveXObject){
-                request=new ActiveXObject("Microsoft.XMLHTTP");
-            }
-
-            try{
-                request.onreadystatechange=getEmailInfo;
-                request.open("POST",url,true);
-                request.send();
-            }catch(e){alert("Unable to connect to server");}
-        }
-
-        function getEmailInfo(){
-            if(request.readyState==4){
-                var val=request.responseText;
-                document.getElementById('emailAvailability').innerHTML=val;
-            }
-        }
-
-        jQuery(document).ready(function () {
-           jQuery("span#myspan").hide();
-           jQuery("p#invalidUserNotify").hide();
-        });
-        var passwordMatches = function() {
-            var password = jQuery("#password").val();
-            var confirmPassword = jQuery("#confirm_password").val();
-            console.log(password, confirmPassword, password == confirmPassword);
-            if (password == confirmPassword) {
-                jQuery("span#myspan").hide();
-                return true
-            } else {
-                jQuery("span#myspan").show();
-                return false
-            }
-        };
-        jQuery(document).on("focus", "#password", passwordMatches);
-        jQuery(document).on("focus", "#confirm_password", passwordMatches);
-        jQuery(document).on("change", "#confirm_password", passwordMatches);
-        jQuery(document).on("blur", "#email", sendEmailInfo);
-        jQuery(document).on("blur", "#username", sendUserNameInfo());
         history.forward();
 	</script>
 </head>
@@ -101,26 +33,13 @@
 		<%--<c:if test="${usernotvalid}">
 			<p id="invalidUserNotify" style="background-color: white; text-align: center">Invalid User!!!</p>
 		</c:if>--%>
-
-			<div class="row well" >
-			<div>
-				<a class="pull-left a1" style="text-decoration: none">Link Sharing</a>
-				<div class="col-md-2 col-sm-3 searchbox">
-					<div class="input-group ">
-						<span class="input-group-addon glyphicon glyphicon-search"></span>
-						<input type="search" class="form-control" placeholder="search"></input>
-						<span class="input-group-addon glyphicon glyphicon-remove-sign"></span>					
-					</div>
-				</div>
-			</div>
-		</div>
+<%@include file="homePageHeader.jsp"%>
 	<div id="division1" class="col-md-8 col-sm-8">
 		<div style="padding-left: 0;">
 			<div class="dynamicDiv" style="margin-bottom:15px;">
 				<div class="dynamicDivHead">
 					<p class="phead">Recent Shares</p>
 				</div>
-
 				<% //while (blogIterator.hasNext()){ Blog userblog = blogIterator.next();%>
 				<div style="margin:10px;">
 					<div class="media">
@@ -160,73 +79,17 @@
 							<input type="password" class="form-control" placeholder="Enter password" name="pass" required>
 					      </div>
 				    	</div>
-				    	<div class="form-group"> 
+				    	<div class="form-group">
 						<a style="text-decoration:underline;" class="control-label col-sm-5" href="/forgotpassword">Forgot Password</a>
 						<div class="col-sm-5 pull-right">
 							<button type="submit" class="btn btn-default" form="loginForm">Login</button>
-				      		</div> 
+				      		</div>
 				      	</div>
 				</form>
 			</div>
 		</div>
 		<div style="padding-right: 0;">
-			<div class="dynamicDiv">
-				<div class="dynamicDivHead">
-					<p class="phead">Registration</p>
-				</div>
-				<form class="form-horizontal" style="padding:10px;" enctype="multipart/form-data" action="/register" method="post">
-			    		<div class="form-group">
-				      		<label class="control-label col-sm-4" for="firstname">First Name:</label>
-				      		<div class="col-sm-8">
-							<input type="text" id="firstname" class="form-control" minlength="5" placeholder="Enter name" name="firstName" required></input>
-			      			</div>
-			    		</div>
-			    		<div class="form-group">
-				      		<label class="control-label col-sm-4" for="lastname">Last Name:</label>
-				      		<div class="col-sm-8">
-							<input id="lastname" type="text" class="form-control" minlength="5" placeholder="Enter name" name="lastName" required></input>
-			      			</div>
-			    		</div>
-			    		<div class="form-group">
-				      		<label class="control-label col-sm-4">Email:</label>
-				      		<div class="col-sm-8">
-							<input type="email" onkeyup="sendEmailInfo()" id="email" class="form-control" placeholder="Enter email" name="email" required></input>
-								<span id="emailAvailability"></span>
-							</div>
-			    		</div>
-			    		<div class="form-group">
-				      		<label class="control-label col-sm-4" for="username">Username:</label>
-				      		<div class="col-sm-8">
-							<input type="text" onkeyup="sendUserNameInfo()" id="username" class="form-control" minlength="5" placeholder="Enter username" name="userName" required></input>
-								<span id="usernameAvailability"></span>
-							</div>
-			    		</div>
-				    	<div class="form-group">
-					      <label class="control-label col-sm-3" for="password">Password:</label>
-					      <div class="col-sm-9">          
-							<input type="password" id="password" class="form-control" minlength="5" placeholder="Enter password" name="password" required></input>
-					      </div>
-				    	</div>
-						<div class="form-group">
-							<label class="control-label col-sm-3" for="confirm_password">Confirm Password:</label>
-							<div class="col-sm-9">
-								<input type="password" id="confirm_password" class="form-control" minlength="5" placeholder="Enter password" required/>
-								<span id="myspan" style="color: red;">Please enter same password</span>
-							</div>
-						</div>
-				    	<div class="form-group">
-					      <label class="control-label col-sm-3">Photo:</label>
-					      <div class="col-sm-9">
-							<input type="file" class="form-control" name="pho"></input>
-					      </div>
-				    	</div>
-				    	<div class="form-group">       
-						<div class="col-sm-5 pull-right">
-							<button type="submit" id="register" class="btn btn-default">Register</button>
-				      		</div>
-				      	</div>
-				</form>
-			</div>
+			<%@include file="registrationForm.jsp"%>
 		</div>
 
 	</div>

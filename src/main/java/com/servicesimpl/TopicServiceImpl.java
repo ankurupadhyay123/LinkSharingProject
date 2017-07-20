@@ -30,4 +30,9 @@ public class TopicServiceImpl implements TopicService {
     @Override
     public Topic findByname(String topicname)
     { return topicDao.findTopicByname(topicname); }
+
+    @Override
+    public Long getNoOfTopics(User user){
+        return topicDao.getNoOfTopics(user);
+    }
 }

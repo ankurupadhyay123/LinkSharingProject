@@ -1,6 +1,7 @@
 package com.daoimpl;
 
 import com.daoapi.ResourceDao;
+import com.entities.ReadingItem;
 import com.entities.Resource;
 import com.entities.Topic;
 import com.entities.User;
@@ -22,6 +23,7 @@ public class ResourceDaoImpl implements ResourceDao {
 
     private SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
     private Resource resource = new Resource();
+    private ReadingItem readingItem = new ReadingItem();
 
     @Override
     public boolean saveLinkUrl(User user, String linkUrl, String description, Topic topic) {
@@ -32,9 +34,13 @@ public class ResourceDaoImpl implements ResourceDao {
         resource.setResourceEnum(resourceEnum);
         resource.setUrl(linkUrl);
         resource.setTopic(topic);
+
+        readingItem.setResource(resource);
+        readingItem.setUser(user);
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         session.save(resource);
+        session.save(readingItem);
         session.getTransaction().commit();
         session.close();
         return true;

@@ -12,4 +12,5 @@ public interface TopicService {
     boolean save(User user, String topicName, String visibility);
     List<Topic> getTopicList(String query);
     Topic findByname(String topicname);
+    Long getNoOfTopics(User user);
 }

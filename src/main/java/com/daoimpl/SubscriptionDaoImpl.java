@@ -6,10 +6,10 @@ import com.entities.Topic;
 import com.entities.User;
 import com.enums.Seriousness;
 import com.enums.Visibility;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;

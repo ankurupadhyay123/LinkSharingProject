@@ -15,6 +15,7 @@ import com.entities.User;
 import com.servicesapi.LoginService;
 import com.servicesapi.RegisterService;
 import com.servicesapi.SubscriptionService;
+import com.servicesapi.TopicService;
 import com.util.GetSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -26,6 +27,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.xml.ws.spi.http.HttpContext;
 
 @Controller
 public class LoginController {
@@ -39,16 +41,24 @@ public class LoginController {
     @Autowired
     private SubscriptionService subscriptionService;
 
+    @Autowired
+    private TopicService topicService;
+
     private ModelAndView view;
     private User user;
+    HttpSession session;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public ModelAndView getHomePage() {
-        view = new ModelAndView("welcome");
+    public ModelAndView getHomePage(HttpServletRequest request) {
+        session = GetSession.getSession(request);
+        User user = (User)session.getAttribute(LinksharingConstants.USER_DETAILS);
+        if(user != null){
+            view = new ModelAndView("dashBoard");
+        }else {
+            view = new ModelAndView("welcome");
+        }
         return view;
     }
-
-    HttpSession session;
 
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public @ResponseBody ModelAndView getSaved(@ModelAttribute User user, @RequestParam("pho") MultipartFile fileUpload, HttpServletRequest request) throws IOException {
@@ -92,6 +102,7 @@ public class LoginController {
             session.setAttribute(LinksharingConstants.USER_DETAILS,user);
             Map<String,Object> userModel = new HashMap<>();
             userModel.put("subscriptionCount",subscriptionService.getSubcriptionsOfUser(user));
+            userModel.put("topicCount",topicService.getNoOfTopics(user));
             view = new ModelAndView("dashBoard",userModel);
             return view;
         }else {

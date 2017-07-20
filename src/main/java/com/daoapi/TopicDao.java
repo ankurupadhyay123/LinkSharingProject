@@ -12,4 +12,5 @@ public interface TopicDao {
     boolean save(User user, String topicName, String visibility);
     List<Topic> getAllPublicTopics(String query);
     Topic findTopicByname(String topicname);
+    Long getNoOfTopics(User user);
 }
