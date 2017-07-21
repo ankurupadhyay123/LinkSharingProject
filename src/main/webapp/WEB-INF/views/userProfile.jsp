@@ -29,12 +29,16 @@
 
             success: function (msg) {
                 alert("Your Password is changed");
+                console.log(msg);
             },
             error: function (msg) {
                 console.log(msg);
                 alert(msg);
             }
         });
+        function preventBack(){window.history.forward();}
+        setTimeout("preventBack()", 0);
+        window.onunload=function(){null};
     </script>
     <style>
 
@@ -83,14 +87,13 @@
                             </div>
                             <div style="margin-left: 10px">
                                 <select class="col-md-4 selectpicker">
-                                    <option>Mustard</option>
-                                    <option>Ketchup</option>
-                                    <option>Relish</option>
+                                    <option>SERIOUS</option>
+                                    <option>CASUAL</option>
+                                    <option>VERY_SERIOUS</option>
                                 </select>
                                 <select class="col-md-4 selectpicker">
-                                    <option>Mustard</option>
-                                    <option>Ketchup</option>
-                                    <option>Relish</option>
+                                    <option>PUBLIC</option>
+                                    <option>PRIVATE</option>
                                 </select>
                                 <div class="col-md-4">
                                     <a href="#"><span class="popupBox glyphicon glyphicon-envelope"></span></a>
@@ -114,13 +117,13 @@
                     <div class="form-group">
                         <label class="control-label col-sm-4" for="firstname">First Name:</label>
                         <div class="col-sm-8">
-                            <input type="text" id="firstname" class="form-control" minlength="5" name="firstName" value="<%=user.getFirstName()%>"></input>
+                            <input type="text" id="firstname" class="form-control" minlength="5" name="firstName" value="<%=user.getFirstName()%>"/>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-4" for="lastname">Last Name:</label>
                         <div class="col-sm-8">
-                            <input id="lastname" type="text" class="form-control" minlength="5" value="<%=user.getLastName()%>" name="lastName"></input>
+                            <input id="lastname" type="text" class="form-control" minlength="5" value="<%=user.getLastName()%>" name="lastName"/>
                         </div>
                     </div>
                     <div class="form-group">
@@ -133,7 +136,7 @@
                     <div class="form-group">
                         <label class="control-label col-sm-3">Photo:</label>
                         <div class="col-sm-9">
-                            <input type="file" class="form-control" id="foto" name="foto"/>
+                            <input type="file" accept="image/*" class="form-control" id="foto" name="foto"/>
                         </div>
                     </div>
                     <div class="form-group" style="margin-bottom: 5px">
@@ -154,7 +157,7 @@
                     <div class="form-group">
                         <label class="control-label col-sm-3" for="password">Password:</label>
                         <div class="col-sm-9">
-                            <input type="password" id="password" class="form-control" minlength="5" placeholder="Enter password" name="password" required></input>
+                            <input type="password" id="password" class="form-control" minlength="5" placeholder="Enter password" name="password" required/>
                         </div>
                     </div>
                     <div class="form-group">

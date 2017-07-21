@@ -19,9 +19,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-/**
- * Created by ankur on 14/7/17.
- */
 @Controller
 public class ValidationController {
 
@@ -66,30 +63,50 @@ public class ValidationController {
         return view;
     }
 
-    @RequestMapping(value = "/checkunique", method = RequestMethod.POST)
-    public void checkUsername(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        session = GetSession.getSession(request);
-        String userName = request.getParameter("val");
-        Object result = validationService.checkUniqueUsername(userName);
-        if(result != null)
-        {
-            response.getWriter().write("<font color=red>Username already taken</font>");
-
+    @RequestMapping(value = "/checkUniqueUserName", method = RequestMethod.POST)
+    public @ResponseBody String checkUsername(@RequestParam("name") String userName) throws IOException {
+        if(userName == "" || userName == null){
+            return null;
         }else {
-            response.getWriter().write("<font color=green>Username available</font>");
+            Object result = validationService.checkUniqueUsername(userName);
+            if(result != null)
+            {
+                return "Username already taken";
+            }else {
+                return "Username available";
+            }
         }
     }
 
-    @RequestMapping(value = "/checkuniqueemail", method = RequestMethod.POST)
-    public void checkEmail(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String email = request.getParameter("val");
-        Object result = validationService.checkUniqueEmail(email);
-        if(result != null)
-        {
-            response.getWriter().write("<font color=red>EmailId already taken</font>");
-
+    @RequestMapping(value = "/checkUniqueEmail", method = RequestMethod.POST)
+    public String checkEmail(@RequestParam("mail") String email) throws IOException {
+        if(email == "" || email == null){
+            return null;
         }else {
-            response.getWriter().write("<font color=green>EmailID available</font>");
+            Object result = validationService.checkUniqueEmail(email);
+            if(result != null)
+            {
+                return "Email already taken";
+
+            }else {
+                return "EmailID available";
+            }
+        }
+    }
+
+    @RequestMapping(value = "/checkUniqueTopic", method = RequestMethod.POST)
+    public String checkTopic(@RequestParam("topic") String topic) throws IOException {
+        if(topic == "" || topic == null){
+            return null;
+        }else {
+            Object result = validationService.findTopicByname(topic);
+            if(result != null)
+            {
+                return "Topic with same name exist";
+
+            }else {
+                return "Topic available";
+            }
         }
     }
 }

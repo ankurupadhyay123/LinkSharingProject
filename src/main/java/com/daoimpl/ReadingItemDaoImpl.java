@@ -12,19 +12,23 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-/**
- * Created by ankur on 21/7/17.
- */
-
 @Repository
 public class ReadingItemDaoImpl implements ReadingItemDao{
 
     private SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
 
     @Override
-    public List<Resource> getInboxResources(User user) {
+    public List<ReadingItem> getInboxResources(User user) {
         Session session = sessionFactory.openSession();
-        List<Resource> readingItemList = session.createQuery("select resource from ReadingItem r where r.user.userName=:username").setParameter("username",user.getUserName()).list();
+        List<ReadingItem> readingItemList = session.createQuery("select resource from ReadingItem r where r.user.userName=:username").setParameter("username",user.getUserName()).list();
+        session.close();
+        return readingItemList;
+    }
+
+    @Override
+    public List<Resource> getRecentResources() {
+        Session session = sessionFactory.openSession();
+        List<Resource> readingItemList = session.createQuery("select resource from ReadingItem r order by r.resource.dateCreated").setMaxResults(5).list();
         session.close();
         return readingItemList;
     }

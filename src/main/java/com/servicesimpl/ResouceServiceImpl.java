@@ -12,18 +12,14 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-/**
- * Created by ankur on 19/7/17.
- */
-
 @Service
 public class ResouceServiceImpl implements ResourceService {
 
     @Autowired
-    ResourceDao resourceDao;
+    private ResourceDao resourceDao;
 
     @Autowired
-    ReadingItemDao readingItemDao;
+    private ReadingItemDao readingItemDao;
 
     @Override
     public boolean saveLinkUrlResource(User user, String linkUrl, String description, Topic topic) {
@@ -36,7 +32,12 @@ public class ResouceServiceImpl implements ResourceService {
     }
 
     @Override
-    public List<Resource> getInboxResource(User user) {
+    public List<ReadingItem> getInboxResource(User user) {
         return readingItemDao.getInboxResources(user);
+    }
+
+    @Override
+    public List<Resource> getRecentResources(){
+        return readingItemDao.getRecentResources();
     }
 }

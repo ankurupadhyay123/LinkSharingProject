@@ -24,6 +24,11 @@ public class UserDaoImpl implements UserDao {
 	private SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
 
 	public boolean save(User e) {
+		if(e.getUserName() == "admin"){
+			e.setAdmin(true);
+		}else {
+			e.setAdmin(false);
+		}
 		e.setDateCreated(new Date());
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
@@ -32,7 +37,6 @@ public class UserDaoImpl implements UserDao {
 		session.close();
 		System.out.println("Successfully created " + e.toString());
 		return true;
-		//return e.getUserId();
 	}
 
 	@Override

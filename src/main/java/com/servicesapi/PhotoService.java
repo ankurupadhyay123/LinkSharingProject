@@ -2,10 +2,7 @@ package com.servicesapi;
 
 import com.entities.User;
 
-/**
- * Created by ankur on 17/7/17.
- */
-public interface GetPhotoService {
+public interface PhotoService {
 
     byte[] getImage(User user);
 }

@@ -14,10 +14,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 
-/**
- * Created by ankur on 19/7/17.
- */
-
 @Repository
 public class ResourceDaoImpl implements ResourceDao {
 
@@ -55,9 +51,13 @@ public class ResourceDaoImpl implements ResourceDao {
         resource.setResourceEnum(resourceEnum);
         resource.setUrl(docUrl);
         resource.setTopic(topic);
+
+        readingItem.setResource(resource);
+        readingItem.setUser(user);
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         session.save(resource);
+        session.save(readingItem);
         session.getTransaction().commit();
         session.close();
         return true;

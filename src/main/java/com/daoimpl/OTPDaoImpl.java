@@ -2,10 +2,10 @@ package com.daoimpl;
 
 import com.daoapi.OTPDao;
 import com.entities.OTPMapping;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 

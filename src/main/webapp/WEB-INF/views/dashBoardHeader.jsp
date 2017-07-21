@@ -1,4 +1,4 @@
-<%--
+<%@ page import="com.constants.LinksharingConstants" %><%--
   Created by IntelliJ IDEA.
   User: ankur
   Date: 20/7/17
@@ -25,13 +25,9 @@
                 </div>
             </div>
             <div class="col-md-4 col-sm-4" style="padding-right: 0">
-                <a href="#" data-toggle="modal" data-target="#myModal">
-                    <span class="glyphicon glyphicon-comment spanicons"></span>
-                </a>
-                <a href="#"><span class="glyphicon glyphicon-envelope spanicons"></span></a>
-                <a href="#" data-toggle="modal" data-target="#linkModal">
-                    <span class="glyphicon glyphicon-link spanicons"></span>
-                </a>
+                <a href="#" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-comment spanicons"></span></a>
+                <a href="#" data-toggle="modal" data-target="#sendInvitationModal"><span class="glyphicon glyphicon-envelope spanicons"></span></a>
+                <a href="#" data-toggle="modal" data-target="#linkModal"><span class="glyphicon glyphicon-link spanicons"></span></a>
                 <a href="#" data-toggle="modal" data-target="#documentModal"><span class="glyphicon glyphicon-copy spanicons"></span></a>
             </div>
             <div class="col-md-4 col-sm-4">
@@ -44,6 +40,11 @@
                         <span class="caret"></span></button>
                             <ul class="dropdown-menu">
                                 <li><a href="userProfile">Profile</a></li>
+                                <% if(user.isAdmin()){%>
+                                <li><a href="logOut">Users</a></li>
+                                <li><a href="logOut">Topics</a></li>
+                                <li><a href="logOut">Posts</a></li>
+                                <%}%>
                                 <li><a href="logOut">Logout</a></li>
                             </ul>
                     </span>

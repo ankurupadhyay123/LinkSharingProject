@@ -22,6 +22,15 @@
         $('#documentForm').ajaxForm({
 
             success: function (msg) {
+                alert("Document is shared");
+            },
+            error: function (msg) {
+                alert("Document is not shared");
+                console.log(msg);
+            }
+        });
+        $('#sendInvitationForm').ajaxForm({
+            success: function (msg) {
                 alert(msg);
             },
             error: function (msg) {
@@ -41,6 +50,7 @@
 <div class="container" style="width: 70%">
     <%@include file="createTopic.jsp"%>
     <%@include file="shareLink.jsp" %>
+    <%@include file="sendInvitation.jsp"%>
     <%@include file="shareDocument.jsp"%>
     <%@include file="dashBoardHeader.jsp"%>
 
@@ -84,14 +94,18 @@
                                         <option class="selectpickerOptions">CASUAL</option>
                                         <option class="selectpickerOptions">VERY_SERIOUS</option>
                                     </select>
-                                    <select id="topicVisibility" name="topicVisibility" style="margin-left: 15px;width: 80px" class="col-md-4 selectpicker">
+                                    <% if(user.isAdmin()){%>
+                                    <select id="topicVisibility" name="topicVisibility" style="margin-left: 15px;width: 80px" class="col-md-4 pull-right selectpicker">
                                         <option class="selectpickerOptions">PUBLIC</option>
                                         <option class="selectpickerOptions">PRIVATE</option>
                                     </select>
+                                    <%}%>
                                     <div class="col-md-4">
                                         <a href="#"><span class="popupBox glyphicon glyphicon-envelope"></span></a>
+                                        <% if(user.isAdmin()){%>
                                         <a href="#"><span class="glyphicon glyphicon-pencil"></span></a>
                                         <a href="#"><span class="glyphicon glyphicon-trash"></span></a>
+                                        <%}%>
                                     </div>
                                 </div>
                             </div>
@@ -159,14 +173,11 @@
                 <div class="dynamicDivHead">
                     <p class="phead">Inbox</p>
                 </div>
-<%--                <div name="userprofileBlogs" style="padding: 7px">
-
-                </div>--%>
                 <div style="margin:10px;">
                     <c:forEach items="${inboxResourceList}" var="item">
                         <div class="media">
                             <div class="media-left">
-                                <img class="media-object" src="getphoto" style="background-size: 100% 100%;  width:90px; height: 90px">
+                                <img src="imageFetch?email=${item.createdBy.email}" style="background-size: 100% 100%;  width:90px; height: 90px">
                             </div>
                             <div class="media-body">
                                 <div>
@@ -184,8 +195,14 @@
                                         <a href="#" class="fa fa-google"></a>
                                     </div>
                                     <div class="col-md-9 col-sm-9 pull-right" style="padding-right: 0;padding-right: 0">
-                                        <a class="inboxLinks" href="#" style="margin-left: 20px">Download</a>
-                                        <a class="inboxLinks" href="#">View Full Site</a>
+                                        <c:choose>
+                                            <c:when test="${item.resourceEnum == 'DOCUMENT_RESOURCE'}">
+                                                <a class="inboxLinks" href='/download?filePath="+${item.url}+"' download>Download</a>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <a class="inboxLinks" href="${item.url}" target="_blank">View Link</a>
+                                            </c:otherwise>
+                                        </c:choose>
                                         <a class="inboxLinks" href="#">Mark As Read</a>
                                         <a class="inboxLinks" href="#">View Post</a>
                                     </div>

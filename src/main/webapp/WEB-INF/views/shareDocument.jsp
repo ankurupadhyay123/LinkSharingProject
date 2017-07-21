@@ -21,7 +21,6 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title">Share Document</h4>
             </div>
-
             <div class="modal-body">
                 <form method="post" id="documentForm" enctype="multipart/form-data" action="/createDocumentResource">
                     <div class="form-group">

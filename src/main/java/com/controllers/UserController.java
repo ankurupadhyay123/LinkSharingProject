@@ -2,6 +2,7 @@ package com.controllers;
 
 import com.constants.LinksharingConstants;
 import com.entities.User;
+import com.servicesapi.ResourceService;
 import com.servicesapi.UpdationService;
 import com.util.GetSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,19 +16,21 @@ import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
-/**
- * Created by ankur on 20/7/17.
- */
 @Controller
 public class UserController {
 
     ModelAndView view;
 
     @Autowired
-    UpdationService updationService;
+    private UpdationService updationService;
 
-    HttpSession session;
+    @Autowired
+    private ResourceService resourceService;
+
+    private HttpSession session;
 
     @RequestMapping(value = "/userProfile", method = RequestMethod.GET)
     public ModelAndView getUserProfile() {
@@ -62,7 +65,9 @@ public class UserController {
         session = GetSession.getSession(request);
         session.invalidate();
         view = new ModelAndView();
-        view.setViewName("welcome");
+        Map<String,Object> userModel = new HashMap<>();
+        userModel.put("recentResourceList",resourceService.getRecentResources());
+        view = new ModelAndView("welcome",userModel);
         return view;
     }
 }

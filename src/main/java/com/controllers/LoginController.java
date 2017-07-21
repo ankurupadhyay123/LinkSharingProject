@@ -1,33 +1,24 @@
 package com.controllers;
 
-/**
- * Created by ankur on 12/7/17.
- */
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.constants.LinksharingConstants;
-import com.entities.Subscription;
-import com.entities.Topic;
 import com.entities.User;
 import com.servicesapi.*;
 import com.util.GetSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.xml.ws.spi.http.HttpContext;
 
 @Controller
 public class LoginController {
@@ -49,7 +40,7 @@ public class LoginController {
 
     private ModelAndView view;
     private User user;
-    HttpSession session;
+    private HttpSession session;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView getHomePage(HttpServletRequest request) {
@@ -58,7 +49,9 @@ public class LoginController {
         if(user != null){
             view = new ModelAndView("dashBoard");
         }else {
-            view = new ModelAndView("welcome");
+            Map<String,Object> userModel = new HashMap<>();
+            userModel.put("recentResourceList",resourceService.getRecentResources());
+            view = new ModelAndView("welcome",userModel);
         }
         return view;
     }
@@ -66,7 +59,6 @@ public class LoginController {
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public @ResponseBody ModelAndView getSaved(@ModelAttribute User user, @RequestParam("pho") MultipartFile fileUpload, HttpServletRequest request) throws IOException {
         ModelAndView view = new ModelAndView();
-        System.out.println("inside register");
         System.out.println("fileupload "+fileUpload);
         if (fileUpload != null && fileUpload.getSize() > 0) {
                 System.out.println("Saving file: " + fileUpload.getOriginalFilename());
@@ -88,6 +80,9 @@ public class LoginController {
             return view;
         }
         else {
+            Map<String,Object> userModel = new HashMap<>();
+            userModel.put("recentResourceList",resourceService.getRecentResources());
+            view = new ModelAndView("welcome",userModel);
             view.setViewName("welcome");
             return view;
         }
@@ -109,14 +104,13 @@ public class LoginController {
             userModel.put("subscribedTopicsList",subscriptionService.getSubscribedTopics(user));
             userModel.put("subscriptionsForEachTopic",subscriptionService.getSubscriptionsForEachTopic());
             userModel.put("inboxResourceList",resourceService.getInboxResource(user));
-            //System.out.println("list is"+subscriptionService.getSubcriptionsOfUser(user));
-            List<Topic> list = subscriptionService.getSubscribedTopics(user);
-            System.out.println(list);
+            userModel.put("totalItemsInInbox",resourceService.getInboxResource(user).size());
             view = new ModelAndView("dashBoard",userModel);
             return view;
         }else {
-            Map<String,Boolean> userModel = new HashMap<>();
+            Map<String,Object> userModel = new HashMap<>();
             userModel.put("usernotvalid",true);
+            userModel.put("recentResourceList",resourceService.getRecentResources());
             view = new ModelAndView("welcome",userModel);
             return view;
         }

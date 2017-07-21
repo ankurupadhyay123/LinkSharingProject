@@ -5,11 +5,9 @@ import com.entities.User;
 
 import java.util.List;
 
-/**
- * Created by ankur on 14/7/17.
- */
 public interface TopicDao {
     boolean save(User user, String topicName, String visibility);
+    List<Topic> getAllTopics(String query);
     List<Topic> getAllPublicTopics(String query);
     Topic findTopicByname(String topicname);
     Long getNoOfTopics(User user);

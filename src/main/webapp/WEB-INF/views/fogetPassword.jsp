@@ -1,57 +1,15 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: ankur
-  Date: 13/7/17
-  Time: 9:57 PM
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
     <title>Title</title>
-
-    <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/boo
-		tstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script src="${pageContext.request.contextPath}/resources/js/jquery-3.2.1.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/welcomepage.css"/>
     <script>
-/*
-        $("#sendOTP").click(function () {
-           $.ajax(({
-               url:"sendOTP",
-               data:{email:$("#email_id").val()},
-               type:"post",
-               success: function (r) {
-                   if (r === "true"){
-                       alert("OTP sent to \n Please use it to reset password");
-                   }
-               },
-               error:function (e) {
-                   console.log(e);
-               }
-           }));
-        });
-
-*/
-
     $(document).ready(function () {
-      // $("#passwordEntryform").s();
-        /*$("#emailform").onsubmit(function () {
-            $("#emailform").hide();
-        });
         */$("#passwordEntryform").show();
     });
-/*function myfunction() {
-    var x = document.getElementById('myspan');
-    if (x.style.display === 'none') {
-        x.style.display = 'block';
-    } else {
-        x.style.display = 'none';
-    }
-
-}*/
     </script>
 </head>
 <body class="body" style="background:url('${pageContext.request.contextPath}/resources/assets/backgroundImage.jpg');">

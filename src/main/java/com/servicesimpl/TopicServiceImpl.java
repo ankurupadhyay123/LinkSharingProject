@@ -9,10 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-/**
- * Created by ankur on 14/7/17.
- */
-
 @Service
 public class TopicServiceImpl implements TopicService {
 
@@ -24,8 +20,8 @@ public class TopicServiceImpl implements TopicService {
     { return topicDao.save(user,topicName, visibility); }
 
     @Override
-    public List<Topic> getTopicList(String query)
-    { return topicDao.getAllPublicTopics(query); }
+    public List<Topic> getTopicAllList(String query)
+    { return topicDao.getAllTopics(query); }
 
     @Override
     public Topic findByname(String topicname)
@@ -35,4 +31,8 @@ public class TopicServiceImpl implements TopicService {
     public Long getNoOfTopics(User user){
         return topicDao.getNoOfTopics(user);
     }
+
+    @Override
+    public List<Topic> getPublicTopicList(String query)
+    { return topicDao.getAllPublicTopics(query); }
 }

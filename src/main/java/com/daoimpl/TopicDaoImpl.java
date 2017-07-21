@@ -17,15 +17,11 @@ import org.springframework.stereotype.Repository;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by ankur on 14/7/17.
- */
-
 @Repository
 public class TopicDaoImpl implements TopicDao {
 
     @Autowired
-    SubscriptionService subscriptionService;
+    private SubscriptionService subscriptionService;
 
     private SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
     private Topic topic = new Topic();
@@ -38,10 +34,8 @@ public class TopicDaoImpl implements TopicDao {
         Session session = sessionFactory.openSession();
         Query query = session.createQuery("select createdBy FROM Topic where name=:name ").
                 setParameter("name",topicName);
-        //System.out.println("result is "+query.getResultList());
         try{
             Object result = query.uniqueResult();
-            //System.out.println("result is "+result);
             if(result == null){
                 System.out.println("topic available");
                 topic.setCreatedBy(user);
@@ -65,6 +59,16 @@ public class TopicDaoImpl implements TopicDao {
     }
 
     @Override
+    public List<Topic> getAllTopics(String query){
+        Session session = sessionFactory.openSession();
+        Query query1= session.createQuery("SELECT name from Topic where name like :topicname");// and visibility= :visibility");
+        query1.setParameter("topicname",query+"%");
+        List<Topic> topicsList = query1.list();
+        session.close();
+        return topicsList;
+    }
+
+    @Override
     public List<Topic> getAllPublicTopics(String query){
         Visibility vis = Visibility.valueOf("PUBLIC");
         Session session = sessionFactory.openSession();
@@ -80,7 +84,6 @@ public class TopicDaoImpl implements TopicDao {
     public Topic findTopicByname(String topicname){
         Session session = sessionFactory.openSession();
         Query query= session.createQuery("from Topic where name=:topicname");
-        //System.out.println(query);
         query.setParameter("topicname", topicname);
         Topic topic = (Topic) query.uniqueResult();
         session.close();
@@ -92,7 +95,6 @@ public class TopicDaoImpl implements TopicDao {
         Session session = sessionFactory.openSession();
         Query query= session.createQuery("select count(createdBy.userId) from Topic where createdBy.userId=:userId");
         query.setParameter("userId",user.getUserId());
-        Long result =(Long) query.uniqueResult();
-        return result;
+        return (Long) query.uniqueResult();
     }
 }

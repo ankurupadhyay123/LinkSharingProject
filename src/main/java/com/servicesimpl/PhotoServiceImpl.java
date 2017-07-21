@@ -2,19 +2,15 @@ package com.servicesimpl;
 
 import com.daoapi.UserDao;
 import com.entities.User;
-import com.servicesapi.GetPhotoService;
+import com.servicesapi.PhotoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-/**
- * Created by ankur on 17/7/17.
- */
-
 @Service
-public class GetPhotoServiceImpl implements GetPhotoService {
+public class PhotoServiceImpl implements PhotoService {
 
     @Autowired
-    UserDao userDao;
+    private UserDao userDao;
 
     @Override
     public byte[] getImage(User user) { return userDao.getProfilePhoto(user); }

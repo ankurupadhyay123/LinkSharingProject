@@ -8,6 +8,27 @@ var showPopup = function() {
 jQuery(document).on("click", ".popupBox", showPopup);
 
 $(document).ready(function () {
+    $("#topicName").keyup(function () {
+        $.ajax({
+            url: "/checkUniqueTopic?topic=" + $("#topicName").val(),
+            method: "Post",
+            success: function (response) {
+                if (response == "Topic with same name exist") {
+                    // $("#checkTopicAvailability").css("color", "green");
+                    $("#checkTopicAvailability").text(response).css("color", "green");
+                    $('#submitForm').attr('disabled', false);
+                }
+                else {
+                    // $("#checkTopicAvailability").css("color", "red");
+                    $("#checkTopicAvailability").text(response).css("color", "red");
+                    $('#submitForm').attr('disabled', true);
+                }
+            }
+        })
+    });
+});
+
+$(document).ready(function () {
     function createTopic() {
         var name = $("#topicName").val();
         var visibility = $("#topicvisibility").val();
@@ -16,8 +37,12 @@ $(document).ready(function () {
             url: "createTitle",
             data: {topicName: name, visibility: visibility},
             success: function (response) {
+                if(response){
+                    alert("Topic created");
+                }else {
+                    alert("Topic not created ");
+                }
                 console.log("response", response);
-                alert("data saved");
             },
             error: function (r) {
                 console.log(r);
@@ -37,8 +62,12 @@ $(document).ready(function () {
             url: "createLinkResource",
             data: {linkUrl: linkUrl, description: description, topic:topic},
             success: function (response) {
+                if(response){
+                    alert("Link Resource Created");
+                }else {
+                    alert("Link Resource Not Created");
+                }
                 console.log("response", response);
-                alert("data saved");
             },
             error: function (r) {
                 console.log(r);

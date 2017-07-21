@@ -19,33 +19,33 @@
         <div class="form-group">
             <label class="control-label col-sm-4" for="firstname">First Name:</label>
             <div class="col-sm-8">
-                <input type="text" id="firstname" class="form-control" minlength="5" placeholder="Enter name" name="firstName" required></input>
+                <input type="text" id="firstname" class="form-control" minlength="5" placeholder="Enter name" name="firstName" required/>
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-sm-4" for="lastname">Last Name:</label>
             <div class="col-sm-8">
-                <input id="lastname" type="text" class="form-control" minlength="5" placeholder="Enter name" name="lastName" required></input>
+                <input id="lastname" type="text" class="form-control" minlength="5" placeholder="Enter name" name="lastName" required/>
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-sm-4">Email:</label>
             <div class="col-sm-8">
-                <input type="email" onkeyup="sendEmailInfo()" id="email" class="form-control" placeholder="Enter email" name="email" required></input>
+                <input type="email" onkeyup="sendEmailInfo()" id="email" class="form-control" placeholder="Enter email" name="email" required/>
                 <span id="emailAvailability"></span>
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-sm-4" for="username">Username:</label>
             <div class="col-sm-8">
-                <input type="text" onkeyup="sendUserNameInfo()" id="username" class="form-control" minlength="5" placeholder="Enter username" name="userName" required></input>
+                <input type="text" id="username" class="form-control" minlength="5" placeholder="Enter username" name="userName" required/>
                 <span id="usernameAvailability"></span>
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-sm-3" for="password">Password:</label>
             <div class="col-sm-9">
-                <input type="password" id="password" class="form-control" minlength="5" placeholder="Enter password" name="password" required></input>
+                <input type="password" id="password" class="form-control" minlength="5" placeholder="Enter password" name="password" required/>
             </div>
         </div>
         <div class="form-group">
@@ -58,7 +58,7 @@
         <div class="form-group">
             <label class="control-label col-sm-3">Photo:</label>
             <div class="col-sm-9">
-                <input type="file" class="form-control" name="pho"></input>
+                <input type="file" accept="image/*" class="form-control" name="pho"/>
             </div>
         </div>
         <div class="form-group">
