@@ -104,13 +104,14 @@ public class LoginController {
             userModel.put("subscribedTopicsList",subscriptionService.getSubscribedTopics(user));
             userModel.put("subscriptionsForEachTopic",subscriptionService.getSubscriptionsForEachTopic());
             userModel.put("inboxResourceList",resourceService.getInboxResource(user));
-            userModel.put("totalItemsInInbox",resourceService.getInboxResource(user).size());
             view = new ModelAndView("dashBoard",userModel);
             return view;
         }else {
             Map<String,Object> userModel = new HashMap<>();
+            String errorMessage = "Invalid Username or Password";
             userModel.put("usernotvalid",true);
             userModel.put("recentResourceList",resourceService.getRecentResources());
+            userModel.put("message",errorMessage);
             view = new ModelAndView("welcome",userModel);
             return view;
         }

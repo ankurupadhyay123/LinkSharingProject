@@ -24,6 +24,7 @@
 
 <body class="body" style="background:url('${pageContext.request.contextPath}/resources/assets/mybag.jpg');">
 	<div class="container" >
+		<div style="color: green;text-align: center; font-size: 25px;background-color: white">${logoutMessage}</div>
 <%@include file="homePageHeader.jsp"%>
 	<div id="division1" class="col-md-8 col-sm-8">
 		<div style="padding-left: 0;">
@@ -71,6 +72,7 @@
 					<p class="phead">Login</p>
 				</div>
 				<form class="form-horizontal" id="loginForm" style="padding:10px;" action="/login" method="post">
+						<p style="color: red">${message}</p>
 			    		<div class="form-group">
 				      		<label class="control-label col-sm-4">Username:</label>
 				      		<div class="col-sm-8">

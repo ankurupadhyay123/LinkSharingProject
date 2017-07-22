@@ -66,7 +66,9 @@ public class UserController {
         session.invalidate();
         view = new ModelAndView();
         Map<String,Object> userModel = new HashMap<>();
+        String errorMessage = "You are successfully logged out";
         userModel.put("recentResourceList",resourceService.getRecentResources());
+        userModel.put("logoutMessage",errorMessage);
         view = new ModelAndView("welcome",userModel);
         return view;
     }

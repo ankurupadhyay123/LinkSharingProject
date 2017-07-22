@@ -18,6 +18,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 public class ValidationController {
@@ -42,8 +44,10 @@ public class ValidationController {
     public @ResponseBody ModelAndView sendOTP(@RequestParam("email_name") String email, HttpServletRequest request){
 
         if(emailService.sendOTPToUser(email)){
-            view = new ModelAndView();
-            view.setViewName("fogetPassword");
+            Map<String,Object> userModel = new HashMap<>();
+            String notify = "OTP is sent to your mail. Please check!!!";
+            userModel.put("emailNotification",notify);
+            view = new ModelAndView("fogetPassword",userModel);
         }
         return view;
     }

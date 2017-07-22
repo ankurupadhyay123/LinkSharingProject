@@ -13,7 +13,7 @@
     </script>
 </head>
 <body class="body" style="background:url('${pageContext.request.contextPath}/resources/assets/backgroundImage.jpg');">
-
+<div style="color: white;text-align: center">${emailNotification}</div>
 <form id="emailform" class="form-inline" method="post" action="/sendOTP">
 
     <div class="form-group">
